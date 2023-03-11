@@ -64,11 +64,7 @@ export function InteractionManager({ children }: { children: React.ReactNode }) 
         // https://github.com/mrdoob/three.js/issues/16031
         // Allow custom userland intersect sort order
         intersections = events.filter(intersections, get())
-      } else {
-        // Otherwise, filter to first hit
-        const hit = intersections.find((i) => i?.object)
-        if (hit) intersections = [hit]
-      }
+      } 
 
       for (const intersection of intersections) {
         let eventObject: THREE.Object3D | null = intersection.object
@@ -110,7 +106,7 @@ export function InteractionManager({ children }: { children: React.ReactNode }) 
   const triggerEvent = React.useCallback(
     (interaction: XRInteractionType) => (e: XREvent<XRControllerEvent>) => {
       const hovering = hoverState[e.target.inputSource.handedness]
-      const intersections = Array.from(new Set(hovering.values()))
+      const intersections = intersect(e.target.controller)
 
       interactions.forEach((handlers, object) => {
         if (hovering.has(object)) {
